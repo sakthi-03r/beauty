@@ -1,0 +1,16 @@
+{
+  "name": "Lakshana Bridal Studio",
+  "short_name": "Lakshana",
+  "description": "Bridal makeup, hairstyling, saree draping, and beauty services in Thiruvennainallur, Tamil Nadu.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FCF8FD",
+  "theme_color": "#8A5BB8",
+  "icons": [
+    {
+      "src": "/favicon/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
