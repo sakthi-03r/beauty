@@ -78,7 +78,6 @@ body {
   line-height: 1.7;
   color: var(--clr-text-dark);
   background-color: var(--clr-bg);
-  overflow-x: hidden;
   width: 100%;
   position: relative;
   -webkit-font-smoothing: antialiased;
@@ -2215,14 +2214,18 @@ body.no-scroll {
   }
 }
 
-/* Fix for massive empty space on mobile */
+
+
+
+
+/* Fix for horizontal overflow from AOS animations without breaking sticky */
+.about, .services, .gallery, .testimonials, .contact, .footer {
+  overflow-x: hidden;
+}
+
+
 @media (max-width: 992px) {
   .hero {
-    height: 100vh;
-    min-height: 100vh;
-  }
-  .hero-sticky-wrapper {
-    position: relative;
-    height: 100vh;
+    height: 180vh;
   }
 }

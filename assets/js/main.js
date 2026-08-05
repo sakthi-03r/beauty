@@ -462,6 +462,15 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const frameIndex = Math.floor(scrollFraction * (frameCount - 1));
             updateImage(frameIndex);
+
+            // Fade out hero content as user scrolls down
+            const heroContent = document.querySelector('.hero-content');
+            if (heroContent) {
+              let opacity = 1 - (scrollFraction / 0.3); // Fades out in first 30% of scroll
+              opacity = Math.max(0, Math.min(1, opacity));
+              heroContent.style.opacity = opacity;
+              heroContent.style.transform = `translateY(${(scrollFraction) * 50}px)`;
+            }
           }
           ticking = false;
         });
