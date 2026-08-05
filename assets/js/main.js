@@ -442,6 +442,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const img = frames[index];
       if (img && img.complete && img.naturalWidth !== 0) {
         context.drawImage(img, 0, 0, canvas.width, canvas.height);
+      } else {
+        // Fallback to the closest previously loaded frame so it doesn't stay blank
+        let fallbackIndex = index;
+        while(fallbackIndex > 0) {
+          fallbackIndex--;
+          const fallbackImg = frames[fallbackIndex];
+          if (fallbackImg && fallbackImg.complete && fallbackImg.naturalWidth !== 0) {
+            context.drawImage(fallbackImg, 0, 0, canvas.width, canvas.height);
+            break;
+          }
+        }
       }
     };
 
