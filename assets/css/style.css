@@ -70,8 +70,6 @@ html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   scroll-padding-top: var(--navbar-h);
-  overflow-x: hidden;
-  max-width: 100vw;
 }
 
 body {
@@ -81,6 +79,8 @@ body {
   color: var(--clr-text-dark);
   background-color: var(--clr-bg);
   overflow-x: hidden;
+  width: 100%;
+  position: relative;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -2212,5 +2212,17 @@ body.no-scroll {
   .hero {
     min-height: auto;
     padding: 40px 0;
+  }
+}
+
+/* Fix for massive empty space on mobile */
+@media (max-width: 992px) {
+  .hero {
+    height: 100vh;
+    min-height: 100vh;
+  }
+  .hero-sticky-wrapper {
+    position: relative;
+    height: 100vh;
   }
 }
