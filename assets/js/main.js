@@ -301,11 +301,20 @@ document.addEventListener('DOMContentLoaded', () => {
             message: message.value
           })
         })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
+        .then(async response => {
+          const contentType = response.headers.get("content-type");
+          if (contentType && contentType.indexOf("application/json") !== -1) {
+            const data = await response.json();
+            if (!response.ok) {
+              throw new Error(data.error || 'Network response was not ok');
+            }
+            return data;
+          } else {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
           }
-          return response.json();
         })
         .then(data => {
           submitBtn.innerHTML = `

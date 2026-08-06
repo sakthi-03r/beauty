@@ -12,7 +12,8 @@ A luxurious, pixel-perfect bridal studio website for **Lakshana Bridal Studio**,
 - **Mobile-First UX** — Animated drawer menu, sticky CTA, WhatsApp float, and touch-optimized interactions.
 - **Testimonial Carousel** — Swiper.js with autoplay, pagination, and navigation for 5-star reviews.
 - **Accessibility** — Semantic HTML5, ARIA labels, keyboard navigation, and focus states.
-- **Performance & Optimized** — Deeply optimized DOM, cleaned logic, lazy loading, and minimal footprint.
+- **Performance & Optimized** — Deeply optimized DOM, cleaned logic, lazy loading, and minimal footprint. Includes a CSS background fallback for the hero animation while frames load.
+- **Privacy First** — Locally hosted libraries (AOS, Swiper) to prevent cross-site tracking and bypass aggressive ad-blockers (like Brave Shields).
 - **SEO Optimized** — Meta tags, Open Graph, and proper heading hierarchy.
 
 ## 🎨 Color Palette
@@ -42,8 +43,14 @@ A luxurious, pixel-perfect bridal studio website for **Lakshana Bridal Studio**,
 ├── api/
 │   └── contact.py        # Python Serverless API for form submission
 ├── assets/
-│   ├── css/style.css     # Complete design system
-│   ├── js/main.js        # Interactivity, Lightbox, & API fetch logic
+│   ├── css/
+│   │   ├── style.css         # Complete design system
+│   │   ├── aos.css           # Local Animate On Scroll styles
+│   │   └── swiper-bundle...  # Local Swiper styles
+│   ├── js/
+│   │   ├── main.js           # Interactivity, Lightbox, & API fetch logic
+│   │   ├── aos.js            # Local Animate On Scroll script
+│   │   └── swiper-bundle...  # Local Swiper script
 │   ├── frame/            # Extracted image frames for the hero animation
 │   └── images/           # Bridal images & avatars
 ├── favicon/              # SVG favicon
@@ -72,11 +79,46 @@ If you are hosting on **Vercel** (or similar serverless platforms), you must con
 - `SENDER_EMAIL`: The Gmail address used to send the emails (e.g., `your-email@gmail.com`).
 - `SENDER_PASSWORD`: An **App Password** generated from your Google Account (Do not use your main login password).
 
-To generate a Google App Password:
-1. Go to your Google Account (Security settings).
-2. Enable 2-Step Verification.
-3. Search for "App Passwords" and create one (Name it "Vercel" or "Website").
-4. Copy the generated 16-character code and paste it as the `SENDER_PASSWORD` value in Vercel.
+### 🔑 How to Generate a Google App Password (Step-by-Step)
+
+> **Why?** Google blocks sign-ins from "less secure apps" by default. An App Password is a one-time 16-character code that lets your serverless API authenticate with Gmail SMTP without exposing your real password.
+
+**Step 1 — Sign in to your Google Account**
+- Open [myaccount.google.com](https://myaccount.google.com/) and sign in with the Gmail address you want to send emails from.
+
+**Step 2 — Enable 2-Step Verification (required first)**
+- Navigate to **Security → 2-Step Verification**
+  👉 Direct link: [https://myaccount.google.com/signinoptions/two-step-verification](https://myaccount.google.com/signinoptions/two-step-verification)
+- Click **Get started** and follow the prompts (phone number → verification code → confirm).
+- Once enabled, you'll see a ✅ confirmation on the Security page.
+
+> [!IMPORTANT]
+> App Passwords are **only available** after 2-Step Verification is turned on. If you skip this step, the App Passwords option will not appear.
+
+**Step 3 — Go to the App Passwords page**
+- 👉 Direct link: [https://myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords)
+- You can also find it by going to [myaccount.google.com](https://myaccount.google.com/) → **Security** → **2-Step Verification** → scroll to bottom → **App passwords**.
+
+**Step 4 — Create a new App Password**
+- In the **App name** field, type a label (e.g., `Vercel` or `Lakshana Website`).
+- Click **Create**.
+
+**Step 5 — Copy the generated password**
+- Google will display a **16-character password** (formatted as `xxxx xxxx xxxx xxxx`).
+- **Copy it immediately** — you won't be able to see it again after closing the dialog.
+- Remove the spaces when pasting (e.g., `xxxxxxxxxxxxxxxx`).
+
+**Step 6 — Add it to Vercel**
+- Go to your Vercel project → **Settings** → **Environment Variables**.
+- Set the following:
+  | Variable | Value |
+  |----------|-------|
+  | `SENDER_EMAIL` | `your-email@gmail.com` |
+  | `SENDER_PASSWORD` | `xxxxxxxxxxxxxxxx` (the 16-char App Password) |
+- Click **Save** and **redeploy** the project for changes to take effect.
+
+> [!TIP]
+> You can revoke an App Password at any time from [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords). If you suspect it has been compromised, revoke it and generate a new one.
 
 ## 🔎 Enterprise SEO & Performance
 
@@ -84,6 +126,7 @@ The website is fully optimized for technical SEO, local search, and performance:
 - **Meta & Open Graph:** Comprehensive Open Graph tags (Facebook/WhatsApp), Twitter Cards, and canonical URLs for pristine social sharing.
 - **Structured Data (JSON-LD):** Implements `LocalBusiness` and `WebSite` schemas for enhanced Google Rich Results.
 - **Performance:** Resources are optimized using `preconnect`, `dns-prefetch`, and `preload`. JavaScript is completely deferred to prevent render-blocking.
+- **Mobile Viewport Fixes:** Native use of `100dvh` to handle mobile browser address bar dynamic resizing without breaking layouts.
 - **Image Optimization:** All images include explicit `width`/`height`, `loading="lazy"`, and `decoding="async"` to eliminate Layout Shifts (CLS).
 - **Security:** `vercel.json` provides top-tier security headers (`Strict-Transport-Security`, `X-Content-Type-Options`, etc.).
 
