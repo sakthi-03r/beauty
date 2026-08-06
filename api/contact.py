@@ -31,18 +31,27 @@ class handler(BaseHTTPRequestHandler):
             return
             
         try:
-            # Construct the email
-            msg = EmailMessage()
-            msg.set_content(f"Name: {name}\nEmail: {email}\nPhone: {phone}\n\nMessage:\n{message}")
-            msg['Subject'] = f"New Enquiry from {name} - Lakshana Bridal Studio"
-            msg['From'] = sender_email
-            msg['To'] = receiver_email
-            msg['Reply-To'] = email
-
             # Connect and send via Gmail SMTP
             with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
                 smtp.login(sender_email, sender_password)
+                
+                # 1. Send Notification to Studio (You)
+                msg = EmailMessage()
+                msg.set_content(f"Name: {name}\nEmail: {email}\nPhone: {phone}\n\nMessage:\n{message}")
+                msg['Subject'] = f"New Enquiry from {name} - Lakshana Bridal Studio"
+                msg['From'] = sender_email
+                msg['To'] = receiver_email
+                msg['Reply-To'] = email
                 smtp.send_message(msg)
+                
+                # 2. Send Auto-Reply to Customer
+                if email and '@' in email:
+                    auto_reply = EmailMessage()
+                    auto_reply.set_content(f"Dear {name},\n\nThank you for reaching out to Lakshana Bridal Studio!\n\nWe have successfully received your message. Our team will review your details and contact you within 24 hours.\n\nWarm regards,\nLakshana Bridal Studio Team\nThiruvennainallur, Tamil Nadu\nPhone: +91 80724 69540")
+                    auto_reply['Subject'] = "Thank you for contacting Lakshana Bridal Studio"
+                    auto_reply['From'] = f"Lakshana Bridal Studio <{sender_email}>"
+                    auto_reply['To'] = email
+                    smtp.send_message(auto_reply)
                 
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
